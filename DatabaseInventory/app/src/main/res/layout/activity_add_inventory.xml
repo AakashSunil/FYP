@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.aakash.databaseinventory.AddInventory">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Barcode : "
+        android:padding="20dp"
+        android:id="@+id/Text"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Barcode"
+        android:layout_toEndOf="@+id/Text"
+        android:padding="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name of Product : "
+        android:layout_margin="20dp"
+        android:id="@+id/Name1"
+        android:layout_below="@+id/Barcode" />
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:layout_toEndOf="@id/Name1"
+        android:layout_below="@id/Barcode" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MRP : "
+        android:layout_margin="20dp"
+        android:id="@+id/Price"
+        android:layout_below="@+id/name" />
+    <EditText
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Price1"
+        android:layout_toEndOf="@id/Price"
+        android:layout_below="@id/name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Units : "
+        android:layout_margin="20dp"
+        android:id="@+id/Unit"
+        android:layout_below="@+id/Price" />
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Unit1"
+        android:layout_toEndOf="@id/Unit"
+        android:layout_below="@id/Price" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Upload"
+        android:text="Save/Update"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:onClick="UpdateData"/>
+</RelativeLayout>
