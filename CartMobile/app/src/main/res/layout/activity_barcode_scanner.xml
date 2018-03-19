@@ -17,7 +17,44 @@
     <com.example.aakash.cartmobile.ui.GraphicOverlay
         android:id="@+id/graphicOverlay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600dp"
         />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/balance"
+        android:layout_below="@id/graphicOverlay"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:text="Current Wallet Balance: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/amount"
+        android:layout_below="@id/graphicOverlay"
+        android:layout_toEndOf="@id/balance"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemcount"
+        android:layout_below="@+id/amount"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:text="Items in Cart: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/item"
+        android:layout_below="@id/amount"
+        android:layout_toEndOf="@id/itemcount"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"/>
 </RelativeLayout>

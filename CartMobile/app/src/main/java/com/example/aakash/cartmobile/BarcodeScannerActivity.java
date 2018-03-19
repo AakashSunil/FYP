@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aakash.cartmobile.ui.CameraSource;
@@ -59,6 +60,8 @@ public class BarcodeScannerActivity extends Activity implements BarcodeGraphicTr
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
+
+    TextView balance,item;
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -67,6 +70,12 @@ public class BarcodeScannerActivity extends Activity implements BarcodeGraphicTr
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode_scanner);
+
+        balance = findViewById(R.id.amount);
+        item = findViewById(R.id.item);
+
+        balance.setText(String.valueOf(MainActivity.Amount_wallet));
+        item.setText(String.valueOf(MainActivity.item_count));
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
@@ -287,5 +296,10 @@ public class BarcodeScannerActivity extends Activity implements BarcodeGraphicTr
         mIntent.putExtra(BarcodeObject, data);
         setResult(CommonStatusCodes.SUCCESS, mIntent);
         finish();
+    }
+    @Override
+    public void onBackPressed() {
+
+        // Simply Do noting!
     }
 }

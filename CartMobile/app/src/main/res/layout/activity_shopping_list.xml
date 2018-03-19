@@ -1,29 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.aakash.cartmobile.ShoppingList">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/AmountHead"
+        android:textSize="20dp"
+        android:text="Wallet Balance:"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/Amount"
+        android:textSize="20dp"
+        android:layout_toRightOf="@id/AmountHead"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/ItemCount"
+        android:textSize="20dp"
+        android:text="Number of Items:"
+        android:layout_below="@id/AmountHead"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Items"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@id/AmountHead"
+        android:layout_toEndOf="@id/ItemCount"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/Recycle"
+        android:layout_below="@id/ItemCount">
+
+            
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bar"
+        android:layout_below="@id/Recycle"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:layout_below="@id/bar"
+        android:layout_marginLeft="30dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="Continue Shopping"
-        android:layout_margin="20dp"
         android:id="@+id/CS"
         android:onClick="Previous"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Remove Item"
+        android:id="@+id/RI"
+        android:layout_toEndOf="@id/CS"
+        android:onClick="remove"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/check"
         android:text="Checkout"
-        android:layout_toEndOf="@id/CS"
+        android:layout_toEndOf="@id/RI"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
         android:onClick="Billing"/>
+
+
 
 </RelativeLayout>
