@@ -49,6 +49,10 @@ public class Checkout extends AppCompatActivity {
         mRef = FirebaseDatabase.getInstance(urlotp).getReference();
         mRef.child(MainActivity.otpstr).removeValue();
 
+        String urllist = "https://test-kit-1-shoplist.firebaseio.com/";
+        mRef = FirebaseDatabase.getInstance(urllist).getReference();
+        mRef.child(MainActivity.otpstr).removeValue();
+
         thank.setText("Thank You for Shopping with us\nCome back soon\nClosing in 5 seconds\nYou can leave the cart at the counter");
 
 

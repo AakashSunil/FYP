@@ -53,8 +53,10 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 otpstr = otp.getText().toString();
-
+                Log.e("otpcheck", otpstr);
+                mButton.setClickable(false);
                 switchActivity(v);
+
             }
         });
     }
@@ -64,6 +66,7 @@ public class MainActivity extends Activity {
         if(otpstr.isEmpty())
         {
             Toast.makeText(this,"Please Enter OTP",Toast.LENGTH_LONG).show();
+            mButton.setClickable(true);
         }
         else {
 
@@ -91,12 +94,14 @@ public class MainActivity extends Activity {
                             b.putString("Name",name);
                             b.putString("OTP",otpstr);
                             intent.putExtras(b);
+                            mButton.setClickable(false);
                             startActivity(intent);
 
 
                         } catch (Exception e) {
 
                             Toast.makeText(MainActivity.this,"Wrong OTP",Toast.LENGTH_LONG).show();
+                            mButton.setClickable(true);
 
                         }
                     }

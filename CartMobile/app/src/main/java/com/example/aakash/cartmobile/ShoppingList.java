@@ -2,6 +2,7 @@ package com.example.aakash.cartmobile;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,16 +24,34 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.spec.ECField;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class ShoppingList extends AppCompatActivity {
 
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
     Button pre,check;
     String bar,action,proName,otpstr;
+    String proname,value,quant;
     Bundle b;
     float price;
 
-    private Firebase mRef;
+    int quantity=0;
+    long count = 0;
+    private Firebase mRef,mRef2;
+
+    DatabaseReference databaseReference,mRef1,databaseReference1;
+
+    ArrayList<ListItems> list = new ArrayList<>();
+
+    RecyclerView recyclerView;
+
+    RecyclerView.Adapter adapter ;
+
 
     TextView amt,code,name,itemhead,itemcount;
 
@@ -43,6 +62,10 @@ public class ShoppingList extends AppCompatActivity {
 
 
         Firebase.setAndroidContext(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.Recycle);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ShoppingList.this));
 
         amt = findViewById(R.id.Amount);
         code = findViewById(R.id.bar);
@@ -56,6 +79,55 @@ public class ShoppingList extends AppCompatActivity {
         action = b.getString("Action");
         otpstr = b.getString("OTP");
 
+        try{
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    databaseReference = FirebaseDatabase.getInstance("https://test-kit-1-shoplist.firebaseio.com/").getReference(MainActivity.otpstr + "/" + bar);
+                    databaseReference.keepSynced(true);
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(final DataSnapshot snapshot) {
+
+                       //     Log.d("Check", String.valueOf(snapshot));
+                         //   Log.d("Check", String.valueOf(snapshot.getChildrenCount()));
+
+
+                            for (int i = 0; i < 1; i++) {
+                                if (!snapshot.hasChild("null")) {
+                                    proname = String.valueOf(snapshot.child("Name:").getValue());
+
+                           //         Log.d("Checkname", String.valueOf(snapshot.child("Name:").getValue()));
+                                    value = String.valueOf(snapshot.child("Price:").getValue(Float.class));
+                             //       Log.d("Check", String.valueOf(value));
+
+                                    quant = String.valueOf(snapshot.child("Quantity:").getValue(Integer.class));
+
+                               //     Log.d("Check", String.valueOf(quant));
+                                    list.add(new ListItems(proName, value, quant));
+
+
+                                }
+
+                            }
+                            adapter = new RecyclerViewAdapter(ShoppingList.this, list);
+                            recyclerView.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+            },5000);
+
+    }
+    catch(Exception e)
+    {
+    }
+
 
         pre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,14 +135,12 @@ public class ShoppingList extends AppCompatActivity {
                 Previous(v);
             }
         });
-
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Billing(v);
             }
         });
-
 
         if(action.isEmpty()||bar.isEmpty())
         {
@@ -133,6 +203,57 @@ public class ShoppingList extends AppCompatActivity {
                                 amt.setText(String.valueOf(MainActivity.Amount_wallet));
                                 MainActivity.item_count++;
                                 itemcount.setText(String.valueOf(MainActivity.item_count));
+
+                                mRef1 = FirebaseDatabase.getInstance("https://test-kit-1-shoplist.firebaseio.com/").getReference();
+
+                                //mRef1.child(MainActivity.otpstr).child(bar).child("Quantity:").setValue(Integer.valueOf(1));
+
+                                String urllist = "https://test-kit-1-shoplist.firebaseio.com/";
+                                mRef2 = new Firebase(urllist);
+                                try {
+
+
+                                    mRef2.addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+
+                                            try {
+
+                                                if(!dataSnapshot.hasChild(MainActivity.otpstr)) {
+
+                                                    mRef1.child(MainActivity.otpstr);
+                                                }
+                                                if(!dataSnapshot.child(MainActivity.otpstr).hasChild(bar)) {
+
+                                                    mRef1.child(MainActivity.otpstr).child(bar);
+                                                    mRef1.child(MainActivity.otpstr).child(bar).child("Name:").setValue(proName);
+                                                    mRef1.child(MainActivity.otpstr).child(bar).child("Price:").setValue(price);
+                                                }
+                                                if(dataSnapshot.child(MainActivity.otpstr).child(bar).hasChild("Quantity:"))
+                                                {
+                                                    quantity = dataSnapshot.child(MainActivity.otpstr).child(bar).child("Quantity:").getValue(Integer.class);
+                                                    mRef1.child(MainActivity.otpstr).child(bar).child("Quantity:").setValue(Integer.valueOf(quantity + 1));
+                                                }
+                                                else
+                                                {
+                                                    mRef1.child(MainActivity.otpstr).child(bar).child("Quantity:").setValue(Integer.valueOf(1));
+                                                }
+                                            }
+                                            catch (Exception e){
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
                             }
                         } catch (Exception e) {
 
@@ -141,12 +262,6 @@ public class ShoppingList extends AppCompatActivity {
                             amt.setText(String.valueOf(MainActivity.Amount_wallet));
                             itemcount.setText(String.valueOf(MainActivity.item_count));
                             Toast.makeText(ShoppingList.this, "Item Not Found in the Shop", Toast.LENGTH_LONG).show();
-                            /*Intent intent = new Intent(ShoppingList.this, ShoppingList.class);
-                            Bundle check = new Bundle();
-                            check.putString("Barcode", "");
-                            check.putString("Action", "");
-                            intent.putExtras(check);
-                            startActivity(intent);*/
                         }
                     }
 
@@ -174,6 +289,54 @@ public class ShoppingList extends AppCompatActivity {
                                 amt.setText(String.valueOf(MainActivity.Amount_wallet));
                                 name.setText(proName);
                                 code.setText(bar);
+
+                                mRef2 = new Firebase("https://test-kit-1-shoplist.firebaseio.com/"+MainActivity.otpstr+"/"+bar);
+                                try {
+
+                                    mRef2.addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                                            //try {
+
+                                                if(!dataSnapshot.hasChild(MainActivity.otpstr)) {
+
+                                                }
+                                                if(!dataSnapshot.child(MainActivity.otpstr).hasChild(bar)) {
+
+                                                }
+                                                if(dataSnapshot.hasChild("Quantity:"))
+                                                {
+                                                    quantity = dataSnapshot.child("Quantity:").getValue(Integer.class);
+                                                    if(quantity - 1 == 0)
+                                                    {
+                                                        mRef2.removeValue();
+                                                    }
+                                                    else
+                                                    {
+                                                        mRef2.child("Quantity:").setValue(Integer.valueOf(quantity - 1));
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    Toast.makeText(ShoppingList.this,"Item Not Found in the ---Cart----",Toast.LENGTH_LONG).show();
+                                                }
+                                            //}
+                                            //catch (Exception e){
+
+                                            //}
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
                             } else {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(ShoppingList.this);
                                 builder1.setMessage("Cannot add to the shop.....Pfft!!!");
