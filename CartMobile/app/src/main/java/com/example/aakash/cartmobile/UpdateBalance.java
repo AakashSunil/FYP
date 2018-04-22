@@ -1,3 +1,10 @@
+/**
+ *
+ *  Module of application that lets a user to add money to the wallet when the money goes below 0
+ *
+ *  Input of the amount to update and back to the shopping cart interface (ShoppingList.java)
+ *
+ */
 package com.example.aakash.cartmobile;
 
 import android.content.Intent;
@@ -10,7 +17,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.nearby.messages.internal.Update;
 import com.google.android.gms.vision.barcode.Barcode;
 
 public class UpdateBalance extends AppCompatActivity {
@@ -36,6 +42,7 @@ public class UpdateBalance extends AppCompatActivity {
 
                 updateamt = Float.valueOf(updatewallet.getText().toString());
                 MainActivity.Amount_wallet += updateamt;
+                MainActivity.Amount_Ref = MainActivity.Amount_wallet;
                 Intent intent = new Intent(UpdateBalance.this, BarcodeScannerActivity.class);
                 startActivityForResult(intent, RC_BARCODE_CAPTURE);
                 intent.putExtra(BarcodeScannerActivity.AutoFocus, true);

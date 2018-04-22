@@ -1,8 +1,9 @@
-package com.example.aakash.cartmobile;
-
 /**
- * Created by Aakash on 23-03-2018.
+ *
+ *  Java Class to handle the items attributes.....Name Price and Quantity
+ *
  */
+package com.example.aakash.cartmobile;
 
 public class ListItems {
 
@@ -13,8 +14,8 @@ public class ListItems {
     private String ProductQuantity;
 
     public ListItems() {
-        // This is default constructor.
     }
+
     public ListItems(String name, String price, String quantity) {
 
         this.ProductName = name;

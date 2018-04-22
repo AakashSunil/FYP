@@ -1,3 +1,12 @@
+/**
+ *
+ *  Main Shopping interface of the application
+ *
+ *  It basically shows the last item scanned into the cart along with its quantity and price
+ *
+ *  It has the options to continue shopping, remove item and checkout
+ *
+ */
 package com.example.aakash.cartmobile;
 
 import android.content.DialogInterface;
@@ -41,16 +50,15 @@ public class ShoppingList extends AppCompatActivity {
     float price;
 
     int quantity=0;
-    long count = 0;
     private Firebase mRef,mRef2;
 
-    DatabaseReference databaseReference,mRef1,databaseReference1;
+    DatabaseReference databaseReference,mRef1;
 
-    ArrayList<ListItems> list = new ArrayList<>();
+    static ArrayList<ListItems> list = new ArrayList<>();
 
     RecyclerView recyclerView;
 
-    RecyclerView.Adapter adapter ;
+    RecyclerView.Adapter adapter;
 
 
     TextView amt,code,name,itemhead,itemcount;
@@ -63,7 +71,7 @@ public class ShoppingList extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.Recycle);
+        recyclerView = findViewById(R.id.Recycle);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(ShoppingList.this));
 
@@ -74,6 +82,7 @@ public class ShoppingList extends AppCompatActivity {
         name = findViewById(R.id.name);
         itemhead = findViewById(R.id.ItemCount);
         itemcount = findViewById(R.id.Items);
+
         b = getIntent().getExtras();
         bar = b.getString("Barcode");
         action = b.getString("Action");
@@ -89,32 +98,26 @@ public class ShoppingList extends AppCompatActivity {
                     databaseReference.keepSynced(true);
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(final DataSnapshot snapshot) {
-
-                       //     Log.d("Check", String.valueOf(snapshot));
-                         //   Log.d("Check", String.valueOf(snapshot.getChildrenCount()));
+                        public void onDataChange(DataSnapshot snapshot) {
 
 
                             for (int i = 0; i < 1; i++) {
                                 if (!snapshot.hasChild("null")) {
+
                                     proname = String.valueOf(snapshot.child("Name:").getValue());
-
-                           //         Log.d("Checkname", String.valueOf(snapshot.child("Name:").getValue()));
                                     value = String.valueOf(snapshot.child("Price:").getValue(Float.class));
-                             //       Log.d("Check", String.valueOf(value));
-
                                     quant = String.valueOf(snapshot.child("Quantity:").getValue(Integer.class));
 
-                               //     Log.d("Check", String.valueOf(quant));
                                     list.add(new ListItems(proName, value, quant));
-
+                                    adapter = new RecyclerViewAdapter(ShoppingList.this, list);
+                                    recyclerView.setAdapter(adapter);
 
                                 }
-
                             }
-                            adapter = new RecyclerViewAdapter(ShoppingList.this, list);
-                            recyclerView.setAdapter(adapter);
+
+
                         }
+
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -122,6 +125,7 @@ public class ShoppingList extends AppCompatActivity {
                     });
                 }
             },5000);
+
 
     }
     catch(Exception e)
@@ -206,8 +210,6 @@ public class ShoppingList extends AppCompatActivity {
 
                                 mRef1 = FirebaseDatabase.getInstance("https://test-kit-1-shoplist.firebaseio.com/").getReference();
 
-                                //mRef1.child(MainActivity.otpstr).child(bar).child("Quantity:").setValue(Integer.valueOf(1));
-
                                 String urllist = "https://test-kit-1-shoplist.firebaseio.com/";
                                 mRef2 = new Firebase(urllist);
                                 try {
@@ -238,6 +240,7 @@ public class ShoppingList extends AppCompatActivity {
                                                 {
                                                     mRef1.child(MainActivity.otpstr).child(bar).child("Quantity:").setValue(Integer.valueOf(1));
                                                 }
+
                                             }
                                             catch (Exception e){
 
@@ -296,7 +299,6 @@ public class ShoppingList extends AppCompatActivity {
                                     mRef2.addListenerForSingleValueEvent(new com.firebase.client.ValueEventListener() {
                                         @Override
                                         public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-                                            //try {
 
                                                 if(!dataSnapshot.hasChild(MainActivity.otpstr)) {
 
@@ -321,10 +323,6 @@ public class ShoppingList extends AppCompatActivity {
                                                 {
                                                     Toast.makeText(ShoppingList.this,"Item Not Found in the ---Cart----",Toast.LENGTH_LONG).show();
                                                 }
-                                            //}
-                                            //catch (Exception e){
-
-                                            //}
                                         }
 
                                         @Override
@@ -416,7 +414,31 @@ public class ShoppingList extends AppCompatActivity {
         }
 
     }
+/*    public static class BlogViewHolder extends RecyclerView.ViewHolder{
 
+        TextView pronme,proprce,proquant;
+        public BlogViewHolder(View itemView) {
+            super(itemView);
+            pronme = itemView.findViewById(R.id.ShowProductNameTextView);
+            proprce = itemView.findViewById(R.id.ShowProductPriceTextView);
+            proquant = itemView.findViewById(R.id.ShowProductQuantityTextView);
+        }
+
+        public void setProductName(String productName) {
+
+            pronme.setText(productName);
+        }
+
+        public void setProductPrice(String productPrice) {
+
+            proprce.setText(productPrice);
+        }
+
+        public void setProductQuantity(String productQuantity) {
+
+            proquant.setText(productQuantity);
+        }
+    }*/
     @Override
     public void onBackPressed() {
 

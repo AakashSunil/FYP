@@ -16,12 +16,12 @@ public class MainActivity extends AppCompatActivity {
     private Button mButton;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
 
     public void switchActivity(View v) {
         Intent intent = new Intent(this, BarcodeScannerActivity.class);
@@ -35,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeScannerActivity.BarcodeObject);
-                    Intent next = new Intent(this,AddInventory.class);
-                    next.putExtra("Barcode",barcode.displayValue);
-                    startActivity(next);
+
+                        Intent next = new Intent(this, AddInventory.class);
+                        next.putExtra("Barcode",barcode.displayValue);
+                        startActivity(next);
+
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
                 } else {
                     Toast.makeText(this, "Barcode Failed!", Toast.LENGTH_LONG).show();

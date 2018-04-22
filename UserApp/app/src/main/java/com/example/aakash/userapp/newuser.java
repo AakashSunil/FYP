@@ -1,3 +1,8 @@
+/**
+ *
+ * Module of application that handles the case of new entry users
+ *
+ */
 package com.example.aakash.userapp;
 
 import android.support.v7.app.AppCompatActivity;

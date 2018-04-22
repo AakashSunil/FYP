@@ -1,19 +1,17 @@
+/**
+ *  Java class that handles item removal....only scanning the item is the main job at hand
+ */
 package com.example.aakash.cartmobile;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
 public class ItemRemoval extends AppCompatActivity {
-
-    Button okay;
 
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";

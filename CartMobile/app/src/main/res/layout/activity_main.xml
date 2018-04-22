@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.aakash.cartmobile.MainActivity">
+    tools:context="com.example.aakash.cartmobile.MainActivity" >
 
 
     <EditText
@@ -15,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@id/cont"
         android:layout_margin="30dp"
-        android:hint="Enter the OTP"/>
+        android:hint="Enter the OTP" />
 
     <Button
         android:id="@+id/cont"
@@ -23,33 +22,11 @@
         android:layout_height="wrap_content"
         android:onClick="switchActivity"
         android:text="Continue"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/test"
-        />
+        android:id="@+id/test" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/test1"
-        android:layout_below="@id/test"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/test2"
-        android:layout_below="@id/test1"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/test3"
-        android:layout_below="@id/test2"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/test4"
-        android:layout_below="@id/test3"/>
 </RelativeLayout>

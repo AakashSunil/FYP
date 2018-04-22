@@ -1,5 +1,9 @@
+/**
+ *
+ */
 package com.example.aakash.userapp;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,14 +20,14 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Exist extends AppCompatActivity {
 
     EditText mobile;
-    Button otp,check;
+    Button check;
     TextView test;
 
-    DatabaseReference mRef1,mRef;
+    DatabaseReference mRef1;
 
     private static final int PERMISSION_REQUEST_CODE = 1;
 
-    String urluser = "https://test-kit-1-users.firebaseio.com/";
+    //String urluser = "https://test-kit-1-users.firebaseio.com/";
     String urlotp = "https://test-kit-1-otpgengkit.firebaseio.com/";
 
     Firebase mRef2;
@@ -34,7 +38,7 @@ public class Exist extends AppCompatActivity {
 
     Float amt;
     Integer age;
-    String name=null,mob=null;
+    String name = null, mob = null;
 
 
     @Override
@@ -55,66 +59,9 @@ public class Exist extends AppCompatActivity {
                 checking(v);
             }
         });
-
-
     }
-
-    public void checking(View v)
-    {
-        mob = mobile.getText().toString();
-        test.setText(mob);
-        String url = "https://test-kit-1-users.firebaseio.com/"+ mob;
-
-        mRef2 = new Firebase(url);
-
-            mRef2.addValueEventListener(new com.firebase.client.ValueEventListener() {
-                @Override
-                public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
-
-                    try {
-
-                        age = dataSnapshot.child("Age").getValue(Integer.class);
-                        name = dataSnapshot.child("Name").getValue(String.class);
-                        amt = dataSnapshot.child("Wallet Balance").getValue(Float.class);
-
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                }
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });
-
-
-        try {
-
-            if (amt == null || age == null) {
-                Toast.makeText(Exist.this, "Does Not Exist", Toast.LENGTH_LONG).show();
-            } else {
-
-                Toast.makeText(Exist.this, "Exists", Toast.LENGTH_LONG).show();
-                generate();
-                check.setClickable(false);
-
-
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-
-        }
-    }
-
-
     public void generate() {
         try {
-
 
             mRef1 = FirebaseDatabase.getInstance(urlotp).getReference();
             val = min + (int) (Math.random() * ((max - min) + 1));
@@ -128,6 +75,74 @@ public class Exist extends AppCompatActivity {
         catch (Exception e)
         {
 
+        }
+    }
+    public void checking(View v) {
+
+        mob = mobile.getText().toString();
+        test.setText(mob);
+        String url = "https://test-kit-1-users.firebaseio.com/" + mob;
+        mRef2 = new Firebase(url);
+        mRef2.addValueEventListener(new com.firebase.client.ValueEventListener() {
+        @Override
+        public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+            try {
+                 age = dataSnapshot.child("Age").getValue(Integer.class);
+                 name = dataSnapshot.child("Name").getValue(String.class);
+                 amt = dataSnapshot.child("Wallet Balance").getValue(Float.class);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+
+        }
+        });
+        try
+        {
+            if (amt == null || age == null) {
+
+                Toast.makeText(Exist.this, "Checking...", Toast.LENGTH_SHORT).show();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRef2.addValueEventListener(new com.firebase.client.ValueEventListener() {
+                            @Override
+                            public void onDataChange(com.firebase.client.DataSnapshot dataSnapshot) {
+                                try
+                                {
+                                    age = dataSnapshot.child("Age").getValue(Integer.class);
+                                    name = dataSnapshot.child("Name").getValue(String.class);
+                                    amt = dataSnapshot.child("Wallet Balance").getValue(Float.class);
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+                    }
+                },2000);
+            }
+            else
+            {
+                Toast.makeText(Exist.this, "Exists", Toast.LENGTH_LONG).show();
+                generate();
+                check.setClickable(false);
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }

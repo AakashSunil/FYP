@@ -1,3 +1,6 @@
+/**
+ *  Confirmation Page for user to verify the details before starting to shop
+ */
 package com.example.aakash.cartmobile;
 
 import android.content.Intent;
@@ -8,14 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Confirm extends AppCompatActivity {
 
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
+
+    DatabaseReference mRef;
 
     TextView name_field, balance_field;
 
@@ -26,6 +32,10 @@ public class Confirm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
+
+        String urlhist = "https://test-kit-1-history.firebaseio.com/";
+        mRef = FirebaseDatabase.getInstance(urlhist).getReference();
+
         name_field = findViewById(R.id.name);
         balance_field = findViewById(R.id.balance);
         mButton = findViewById(R.id.continueShop);
@@ -34,7 +44,6 @@ public class Confirm extends AppCompatActivity {
         otpstr = b.getString("OTP");
         name_field.setText(n);
         balance_field.setText(String.valueOf(MainActivity.Amount_wallet));
-
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
